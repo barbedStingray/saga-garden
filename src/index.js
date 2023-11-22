@@ -24,8 +24,8 @@ import App from './App';
 
 const plantList = (state = [], action) => {
   switch (action.type) {
-    case 'ADD_PLANT':
-      return [ ...state, action.payload ];
+    // case 'ADD_PLANT':
+    //   return [ ...state, action.payload ];
     case 'SET_PLANT_LIST':
       return action.payload;
     default:
@@ -41,7 +41,7 @@ const plantList = (state = [], action) => {
 //     return state;
 // }
 
-
+// set your plant list
 function* fetchPlantList() {
   try {
 
@@ -57,11 +57,26 @@ function* fetchPlantList() {
   }
 }
 
+function* addPlantList(action) {
+  try {
+    yield axios.post('/api/plant', action.payload);
+
+    yield put({ type: 'FETCH_PLANT_LIST'});
+
+
+  } catch (error) {
+    console.log(`error POST`, error);
+    alert(`something went wrong`);
+  }
+}
+
+
 
 
 function* rootSaga() {
   // all your sagas here
   yield takeEvery('FETCH_PLANT_LIST', fetchPlantList);
+  yield takeEvery('ADD_PLANT', addPlantList);
 }
 
 const sagaMiddleware = createSagaMiddleware();

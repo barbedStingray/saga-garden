@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 function PlantList() {
@@ -18,14 +18,18 @@ function PlantList() {
         console.log('component did mount');
         // dispatch an action to request the plantList from the API
         getPlantList();
-    }, []); 
+    }, []);
 
     return (
         <div>
             <h3>This is the plant list</h3>
             <ul>
-                {plantList.map((plant) => 
-                <li key={plant.id}>{plant.name}</li>)}
+                {plantList.map((plant) =>
+                    <div>
+                        <li key={plant.name}>{plant.name}</li>
+                        <button key={plant.id}>Delete</button>
+                    </div>
+                )}
             </ul>
 
 
