@@ -20,16 +20,24 @@ function PlantList() {
         getPlantList();
     }, []);
 
+
+    // delete plant item
+    function deletePlant(id) {
+        console.log('deleting plant...');
+        dispatch({ type: 'DELETE_PLANT', payload: id });
+    }
+
     return (
         <div>
             <h3>This is the plant list</h3>
             <ul>
-                {plantList.map((plant) =>
+                {plantList.map(plant => (
                     <div>
                         <li key={plant.name}>{plant.name}</li>
-                        <button key={plant.id}>Delete</button>
+                        <button key={plant.id} onClick={deletePlant(plant.id)} >Delete</button>
                     </div>
-                )}
+                ))
+                }
             </ul>
 
 

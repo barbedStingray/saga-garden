@@ -8,7 +8,7 @@ import logger from 'redux-logger';
 
 // SAGA step 1 - imports
 import createSagaMiddleware from 'redux-saga';
-import { takeEvery, put } from 'redux-saga/effects';
+import { takeEvery, takeLatest, put } from 'redux-saga/effects';
 import axios from 'axios';
 
 
@@ -70,13 +70,27 @@ function* addPlantList(action) {
   }
 }
 
+// delete a plant
+function* deletePlant(action) {
+  try {
+    yield axios.delete(`/api/plant/${action.payload}`);
+
+    yield put({ type: 'FETCH_PLANT_LIST' });
+
+  } catch (error) {
+    console.log(`deleting plant error`, error);
+    alert(`something went wrong`);
+    throw error;
+  }
+}
 
 
 
 function* rootSaga() {
   // all your sagas here
-  yield takeEvery('FETCH_PLANT_LIST', fetchPlantList);
-  yield takeEvery('ADD_PLANT', addPlantList);
+  yield takeLatest('FETCH_PLANT_LIST', fetchPlantList);
+  yield takeLatest('ADD_PLANT', addPlantList);
+  yield takeLatest('DELETE_PLANT', deletePlant);
 }
 
 const sagaMiddleware = createSagaMiddleware();
