@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 
 function PlantList() {
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const reduxState = useSelector(store => store);
     const plantList = useSelector(store => store.plantList);
@@ -27,18 +29,27 @@ function PlantList() {
         dispatch({ type: 'DELETE_PLANT', payload: id });
     }
 
+    // view plant details
+    function viewDetails(id) {
+        console.log(`viewing details of plant id:`, id);
+
+        history.push(`/details/${id}`);
+
+        dispatch({ type: 'FETCH_PLANT_DETAILS', payload: id });
+
+    }
+
     return (
         <div>
             <h3>This is the plant list</h3>
-            <ul>
                 {plantList.map(plant => (
                     <div>
-                        <li key={plant.name}>{plant.name}</li>
-                        <button key={plant.id} onClick={deletePlant(plant.id)} >Delete</button>
+                        <p key={plant.name}>{plant.name}</p>
+                        <button key={plant.id} onClick={ () => deletePlant(plant.id) } >Delete</button>
+                        <button key={plant.id} onClick={ () => viewDetails(plant.id) } >View Details</button>
                     </div>
                 ))
                 }
-            </ul>
 
 
             <pre>{JSON.stringify(reduxState)}</pre>

@@ -33,6 +33,15 @@ const plantList = (state = [], action) => {
   }
 };
 
+const plantDetails = (state = {}, action) => {
+  switch (action.type) {
+    case 'SET_PLANT_DETAILS':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 
 // const plantOriginalList = (state = [], action) => {
 //     if(action.type === 'SET_PLANT_LIST') {
@@ -84,6 +93,19 @@ function* deletePlant(action) {
   }
 }
 
+// obtain plant details
+function* fetchPlantDetails(action) {
+  try {
+    const response = yield axios.get(`/api/plant/details/${action.payload}`);
+
+    yield put({ type: 'SET_PLANT_DETAILS', payload: response.data });
+
+  } catch (error) {
+    console.log(`error in fetch plant details`, error);
+    alert(`error in fetching plant details`);
+  }
+}
+
 
 
 function* rootSaga() {
@@ -91,13 +113,15 @@ function* rootSaga() {
   yield takeLatest('FETCH_PLANT_LIST', fetchPlantList);
   yield takeLatest('ADD_PLANT', addPlantList);
   yield takeLatest('DELETE_PLANT', deletePlant);
+  yield takeLatest('FETCH_PLANT_DETAILS', fetchPlantDetails);
 }
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   combineReducers({ 
-    plantList 
+    plantList,
+    plantDetails
   }),
   applyMiddleware(sagaMiddleware, logger),
 );
