@@ -33,7 +33,7 @@ const plantList = (state = [], action) => {
   }
 };
 
-const plantDetails = (state = {}, action) => {
+const plantDetails = (state = [], action) => {
   switch (action.type) {
     case 'SET_PLANT_DETAILS':
       return action.payload;
@@ -42,13 +42,6 @@ const plantDetails = (state = {}, action) => {
   }
 }
 
-
-// const plantOriginalList = (state = [], action) => {
-//     if(action.type === 'SET_PLANT_LIST') {
-//       return action.payload;
-//     }
-//     return state;
-// }
 
 // set your plant list
 function* fetchPlantList() {
